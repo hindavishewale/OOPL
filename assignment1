@@ -1,0 +1,75 @@
+To Define a class to represent a bank account which includes following memebers:
+1)name of depositor
+2)account number
+3)withdraw amount
+4)balanced amount in account
+memeber function:
+-to assign initial values
+-to deposit an amount
+-to withdraw an amount after checking balance
+-to display name and balance
+implement c++ program using features.
+
+#include <iostream>
+using namespace std;
+class Bank{
+    public:
+    int ac_no,withdraw,deposit,balance;
+    string name;
+    
+    
+    void basic_info()
+    {
+       cout<<"enter name";
+       cin>>name;
+       cout<<"enter account_no";
+       cin>>ac_no;
+       cout<<"enter balance=";
+       cin>>balance;
+       cout<<"\nname="<<name;
+       cout<<"\naccount_no="<<ac_no;
+      cout<<"\nbalance="<<balance;
+    }
+    
+    void depositf()
+    {
+    cout<<"enter deposit";
+    cin>>deposit;
+    balance+=deposit;
+    cout<<"balance="<<balance;
+    }
+    
+    
+    void withdrawf()
+    {
+    cout<<"enter withdraw";
+    cin>>withdraw;
+    balance-=withdraw;
+    cout<<"balance="<<balance;
+    }
+    
+    
+};
+int main() 
+{  
+   Bank b;
+   int ch,choice;
+   do
+   {
+   cout<<"1.basic information\n2.deposit\n3.withdraw";
+   cout<<"\nenter choice\n";
+   cin>>ch;
+   switch(ch)
+   {
+      case 1:b.basic_info();break;
+      case 2:b.depositf();break;
+      case 3:b.withdrawf();break;
+   }
+   
+   
+   
+   cout<<"\n1 to continue";
+   cin>>choice;
+   }while(choice==1);
+    return 0;
+}
