@@ -1,0 +1,79 @@
+#include<iostream>
+using namespace std;
+class complex
+{
+public:
+   float real;
+   float imag;
+
+    complex()
+    {
+    real = 0;
+    imag = 0;
+    }
+    friend ostream & operator << (ostream &output,const complex &a)
+    {
+        output <<a.real<<"+"<<a.imag<<"i";
+        return output;
+    }
+    friend istream & operator >>(istream &input,complex &a)
+    {   cout<<"enter real and imaginary number:";
+        input>>a.real;
+        input>>a.imag;
+        return input;
+        
+    }
+    
+ 
+   
+    complex operator *(complex &a)
+    {
+    complex temp;
+    temp.real=real*a.real-imag*a.imag;
+    temp.imag=real*a.imag+imag*a.real;
+    return temp; 
+    }
+    complex operator +(complex &a)
+    {
+    complex add;
+    add.real=real+a.real;
+    add.imag=imag+a.imag;
+    return add;
+    }
+    complex operator -(complex &a)
+    {
+    complex sub;
+    sub.real=real-a.real;
+    sub.imag=imag-a.imag;
+    return sub;
+    }
+       complex operator /(complex &a)
+    {
+    complex div;
+   div.real=(real*a.real+imag*a.imag)/(a.real*a.real+a.imag*a.imag);
+   div.imag=(imag*a.real+real*a.imag)/(a.real*a.real+a.imag*a.imag);
+    return div;
+    }
+    
+  };
+  int main()
+  {
+  complex o1,o2,add,sub,mul,div;
+  cin>>o1>>o2;
+  add=o1+o2;
+  sub=o1-o2;
+  mul=o1*o2;
+  div=o1/o2;
+  cout<<"addition:";
+ cout<<add<<endl;
+  cout<<"subtration:";
+ cout<<sub<<endl;
+ cout<<"multiplication:";
+ cout<<mul<<endl;
+ cout<<"division:";
+ cout<<div<<endl;
+  return 0;
+  }
+    
+   
+ 
