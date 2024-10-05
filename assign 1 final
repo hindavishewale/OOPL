@@ -1,0 +1,98 @@
+#include <iostream>
+#include<cstring>
+using namespace std;
+class bank
+{
+  public:
+        int amount,deposit,withdrawl,ac_no;
+        char name[20];
+    void get_info()
+    {
+        cout<<"enter ac_no";
+        cin>>ac_no;
+        cout<<"enter name";
+        cin>>name;
+        cout<<"enter amount";
+        cin>>amount;
+    }
+void display()
+    {
+     cout<<ac_no<<"\t"<<name<<"\t"<<amount<<endl;
+    }
+void deposit_func()
+    {
+    cout<<"enter amount to deposit";
+    cin>>deposit;
+    amount+=deposit;
+    cout<<"Total amount:"<<amount<<endl;
+    }
+void withdraw_func()
+    {
+    cout<<"enter amount to withdraw";
+    cin>>withdrawl;
+    if(withdrawl<=amount)
+    {
+    amount-=withdrawl;
+    cout<<"Total amount:"<<amount<<endl;
+    }
+    else
+    {
+        cout<<"not sufficient balanced!!!"<<endl;
+    }
+    }
+};
+
+int main()
+{
+    bank b[10];
+    int ch,choice,i;
+    int n;
+    int temp_ac_no;
+    cout<<"enter number of employee";
+    cin>>n;
+    do
+    {
+        cout<<"1.get_info\n2.deposit\n3.withdrawl\n4.display\n";
+        cin>>ch;
+    switch(ch)
+    {
+        case 1:
+            for(i=0;i<n;i++)
+            {
+            b[i].get_info();
+            }
+            break;
+        case 2: 
+                cout<<"enter account nuomber to deposit amount";
+                cin>>temp_ac_no;
+                for(i=0;i<n;i++)
+                {
+                    if(temp_ac_no==b[i].ac_no)
+                    {
+                        b[i].deposit_func(); 
+                    }
+                }
+                break;
+        case 3:
+                cout<<"enter account nuomber to deposit amount";
+                cin>>temp_ac_no;
+                for(i=0;i<n;i++)
+                {
+                    if(temp_ac_no==b[i].ac_no)
+                    {
+                        b[i].withdraw_func(); 
+                    }
+                }break;
+        case 4: cout<<"ac_no"<<"\t"<<"name"<<"\t"<<"amount"<<endl;
+                for(i=0;i<n;i++)
+                {
+                b[i].display();
+                }
+                break;
+    }
+    cout<<"1 to cont";
+    cin>>choice;
+    }while(choice==1);
+
+    return 0;
+}
