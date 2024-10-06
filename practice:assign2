@@ -1,0 +1,74 @@
+#include <iostream>
+using namespace std;
+class book
+{
+    public:
+        string name;
+        int id,amount,stock,price;
+        
+        void get_book()
+        {
+            cout<<"enter book name";
+            cin>>name;
+            cout<<"id";
+            cin>>id;
+            cout<<"enter book price";
+            cin>>price;
+            cout<<"stock";
+            cin>>stock;
+        }
+        void display()
+        {
+            cout<<name<<"\t"<<id<<"\t"<<stock<<"\t"<<price<<endl;
+        }
+        
+};
+int main()
+{
+   book b[10];
+   int ch,choice,n,temp_id,temp_stock,price,i,total_price;
+   cout<<"enter number of books";
+   cin>>n;
+   do
+   {
+    cout<<"1.insert\n2.display\n3.search"<<endl;
+    cin>>ch;
+    switch(ch)
+    {
+        case 1:
+        for(i=0;i<n;i++)
+        {
+            b[i].get_book();
+        }
+        break;
+        case 2:
+        cout<<"name"<<"\t"<<"id"<<"\t"<<"stock"<<"\t"<<"price"<<endl;
+        for(i=0;i<n;i++)
+        {
+            b[i].display();
+        }
+        break;
+        case 3:
+        cout<<"enter id to search";
+        cin>>temp_id;
+        for(i=0;i<n;i++)
+        {
+            if(temp_id==b[i].id)
+            {
+                cout<<"book is avialable\n";
+                cout<<b[i].name<<"\t"<<b[i].id<<"\t"<<b[i].stock<<"\t"<<b[i].price<<endl;
+                cout<<"enter number of books to purchase";
+                cin>>temp_stock;
+                b[i].stock-=temp_stock;
+                total_price=temp_stock*b[i].price;
+                cout<<"total price="<<total_price;
+            }
+        }
+        break;
+    }
+      cout<<"\n1 to continue";
+      cin>>choice;
+   }while(choice==1);
+
+    return 0;
+}
