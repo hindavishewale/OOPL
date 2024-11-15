@@ -1,0 +1,66 @@
+
+#include <iostream>
+using namespace std;
+class tv
+{
+public:
+	int model_no,screen_size,price;
+	tv()
+	{
+		model_no=0;
+		screen_size=0;
+		price=0;
+	}
+	friend istream & operator >>(istream & in,tv &t)
+	{
+		cout<<"enter model number:";
+		cin>>t.model_no;
+		if(t.model_no<1000||t.model_no>9999)
+		{
+			throw 1;
+		}
+		cout<<"enter screen size:";
+		cin>>t.screen_size;
+		if(t.screen_size<12||t.screen_size>70)
+		{
+			throw 2;
+		}
+		cout<<"enter price:";
+		cin>>t.price;
+		if(t.price<0||t.price>5000)
+		{
+			throw 3;
+		}
+		return in;
+	}
+	friend ostream & operator <<(ostream & out,const tv &t)
+	{
+		out<<"model number:"<<t.model_no<<endl;
+		out<<"screen_size :"<<t.screen_size<<endl;
+        out<<"price:"<<t.price<<endl;
+        return out;
+	}
+	void reset()
+	{
+	    model_no=0;
+	    screen_size=0;
+	    price=0;
+	}
+};
+int main()
+{
+	tv t;
+	try
+	{
+	    cin>>t;
+	}
+	catch(int i)
+	{
+	    cout<<"invalid input";
+	    t.reset();
+	}
+	cout<<"details"<<endl<<t<<endl;
+   	
+
+	return 0;
+}
