@@ -14,7 +14,7 @@ public:
 	friend istream & operator >>(istream & in,tv &t)
 	{
 		cout<<"enter model number:";
-		cin>>t.model_no;
+		in>>t.model_no;
 		if(t.model_no<1000||t.model_no>9999)
 		{
 			throw 1;
