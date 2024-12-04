@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+class televison
+{
+    public:
+    int model_no,screen_size,price;
+    televison()
+    {
+    }
+    void accept()
+    {
+        cout<<"enter model_no(0-9999)";
+        cin>>model_no;
+        if(model_no<1000)
+        {
+            throw 1;
+        }
+        cout<<"enter screen_size(12-70)";
+        cin>>screen_size;
+        if(screen_size<12&&screen_size>70)
+        {
+            throw 2;
+        }
+        cout<<"enter price:";
+        cin>>price;
+        if(price<0)
+        {
+            throw 3;
+        }
+    }
+    void reset()
+    {
+       model_no=0;
+       screen_size=0;
+       price=0;
+    }
+    void display()
+    {
+        cout<<"model_no:"<<model_no<<endl;
+        cout<<"screen_size:"<<screen_size<<endl;
+        cout<<"price:"<<price<<endl;
+    }
+};
+int main()
+{
+   televison tv;
+   try
+   {
+         tv.accept(); 
+   }
+   catch(int i)
+   {
+       tv.reset();
+   }
+   tv.display();
+   
+    return 0;
+}
