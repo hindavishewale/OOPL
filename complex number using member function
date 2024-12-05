@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+class complex 
+{
+  public:
+  int real,imag;
+  void accept()
+  {
+     cout<<"enter real and imaginary part :";
+     cin>>real>>imag;
+  }
+  void display()
+  {
+      cout<<real<<"+"<<imag<<"i"<<endl; 
+  }
+  complex operator +(complex &c)
+  {
+      complex add;
+      add.real=real+c.real;
+      add.imag=imag+c.imag;
+      return add;
+  }
+  complex operator -(complex &c)
+  {
+      complex sub;
+      sub.real=real-c.real;
+      sub.imag=imag-c.imag;
+      return sub;
+  }
+  complex operator *(complex &c)
+  {
+      complex mul;
+      mul.real=real*c.real-imag*c.imag;
+      mul.imag=real*c.imag+c.real*imag;
+      return mul;
+  }
+  complex operator / (complex &c)
+  {
+      complex divv;
+      divv.real=(real*c.real+imag*c.imag)/(c.real*c.real+c.imag*c.imag);
+      divv.imag=(real*c.imag+c.real*imag)/(c.real*c.real+c.imag*c.imag);
+      return divv;
+  }
+};
+int main()
+{
+   complex c1,c2,add,sub,mul,divv;
+   c1.accept();
+   c2.accept();
+   add=c1+c2;
+   sub=c1-c2;
+   mul=c1*c2;
+   divv=c1/c2;
+   cout<<"addition:";
+   add.display();
+   cout<<"\nsubtraction:";
+   sub.display();
+   cout<<"\nmultiplication:";
+   mul.display();
+   cout<<"\ndivision:";
+   divv.display();
+
+    return 0;
+}
