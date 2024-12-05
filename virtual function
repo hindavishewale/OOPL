@@ -1,0 +1,209 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+class Student {
+protected:
+    string name;
+    int rollNumber;
+    string subject;
+
+public:
+    virtual void input() {
+        cout << "Enter Student Name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter Roll Number: ";
+        cin >> rollNumber;
+        cout << "Enter Subject: ";
+        cin.ignore();
+        getline(cin, subject);
+    }
+
+    virtual void display() const {
+        cout << setw(15) << name << setw(10) << rollNumber << setw(15) << subject;
+    }
+
+    virtual ~Student() {}
+};
+
+class StudentDetails : public Student {
+private:
+    string subjectCode;
+    float internalAssessment;
+    float universityExamMarks;
+
+public:
+    void input() override {
+        Student::input();
+        cout << "Enter Subject Code: ";
+        cin >> subjectCode;
+        cout << "Enter Internal Assessment Marks: ";
+        cin >> internalAssessment;
+        cout << "Enter University Examination Marks: ";
+        cin >> universityExamMarks;
+    }
+
+    void display() const override {
+        Student::display();
+        cout << setw(15) << subjectCode
+             << setw(10) << internalAssessment
+             << setw(10) << universityExamMarks << endl;
+    }
+
+    string getSubjectCode() const {
+        return subjectCode;
+    }
+
+    int getRollNumber() const {
+        return rollNumber;
+    }
+
+    void edit() {
+        cout << "Edit details for Roll Number " << rollNumber << ":" << endl;
+        input();
+    }
+};
+
+class MasterTable {
+private:
+    vector<StudentDetails*> records;
+
+public:
+    void buildMasterTable() {
+        int n;
+        cout << "Enter number of students: ";
+        cin >> n;
+        for (int i = 0; i < n; ++i) {
+            auto* student = new StudentDetails();
+            cout << "\nEnter details for student " << (i + 1) << ":" << endl;
+            student->input();
+            records.push_back(student);
+        }
+    }
+
+    void listTable() const {
+        if (records.empty()) {
+            cout << "No records available." << endl;
+            return;
+        }
+        cout << setw(15) << "Name" << setw(10) << "Roll No"
+             << setw(15) << "Subject" << setw(15) << "Subject Code"
+             << setw(10) << "IA Marks" << setw(10) << "UE Marks" << endl;
+        cout << string(75, '-') << endl;
+        for (const auto* record : records) {
+            record->display();
+        }
+    }
+
+    void insertEntry() {
+        auto* student = new StudentDetails();
+        cout << "\nEnter details for new student:" << endl;
+        student->input();
+        records.push_back(student);
+    }
+
+    void deleteEntry() {
+        int rollNumber;
+        cout << "Enter Roll Number to delete: ";
+        cin >> rollNumber;
+
+        for (auto it = records.begin(); it != records.end(); ++it) {
+            if ((*it)->getRollNumber() == rollNumber) {
+                delete *it;
+                records.erase(it);
+                cout << "Record deleted successfully!" << endl;
+                return;
+            }
+        }
+        cout << "Record not found!" << endl;
+    }
+
+    void editEntry() {
+        int rollNumber;
+        cout << "Enter Roll Number to edit: ";
+        cin >> rollNumber;
+
+        for (auto* record : records) {
+            if (record->getRollNumber() == rollNumber) {
+                record->edit();
+                cout << "Record updated successfully!" << endl;
+                return;
+            }
+        }
+        cout << "Record not found!" << endl;
+    }
+
+    void searchRecord() const {
+        int rollNumber;
+        cout << "Enter Roll Number to search: ";
+        cin >> rollNumber;
+
+        for (const auto* record : records) {
+            if (record->getRollNumber() == rollNumber) {
+                cout << "\nRecord found:\n";
+                cout << setw(15) << "Name" << setw(10) << "Roll No"
+                     << setw(15) << "Subject" << setw(15) << "Subject Code"
+                     << setw(10) << "IA Marks" << setw(10) << "UE Marks" << endl;
+                cout << string(75, '-') << endl;
+                record->display();
+                return;
+            }
+        }
+        cout << "Record not found!" << endl;
+    }
+
+    ~MasterTable() {
+        for (auto* record : records) {
+            delete record;
+        }
+    }
+};
+
+int main() {
+    MasterTable table;
+    int choice;
+
+    do {
+        cout << "\n--- Student Records Management ---\n";
+        cout << "1. Build Master Table\n";
+        cout << "2. List Table\n";
+        cout << "3. Insert New Entry\n";
+        cout << "4. Delete Old Entry\n";
+        cout << "5. Edit an Entry\n";
+        cout << "6. Search for a Record\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                table.buildMasterTable();
+                break;
+            case 2:
+                table.listTable();
+                break;
+            case 3:
+                table.insertEntry();
+                break;
+            case 4:
+                table.deleteEntry();
+                break;
+            case 5:
+                table.editEntry();
+                break;
+            case 6:
+                table.searchRecord();
+                break;
+            case 7:
+                cout << "Exiting program. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    } while (choice != 7);
+
+    return 0;
+}
