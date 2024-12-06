@@ -1,42 +1,36 @@
 #include <iostream>
-#include <vector>
-#include <string>
 #include <iomanip>
 using namespace std;
 
 class Student {
-protected:
+public:
     string name;
     int rollNumber;
     string subject;
 
-public:
-    virtual void input() {
+    void input() {
         cout << "Enter Student Name: ";
-        cin.ignore();
+        cin.ignore();  // To handle any leftover newline characters
         getline(cin, name);
         cout << "Enter Roll Number: ";
         cin >> rollNumber;
         cout << "Enter Subject: ";
-        cin.ignore();
+        cin.ignore();  // To handle any leftover newline characters
         getline(cin, subject);
     }
 
-    virtual void display() const {
+    void display() const {
         cout << setw(15) << name << setw(10) << rollNumber << setw(15) << subject;
     }
-
-    virtual ~Student() {}
 };
 
 class StudentDetails : public Student {
-private:
+public:
     string subjectCode;
     float internalAssessment;
     float universityExamMarks;
 
-public:
-    void input() override {
+    void input() {
         Student::input();
         cout << "Enter Subject Code: ";
         cin >> subjectCode;
@@ -46,19 +40,11 @@ public:
         cin >> universityExamMarks;
     }
 
-    void display() const override {
+    void display() const {
         Student::display();
         cout << setw(15) << subjectCode
              << setw(10) << internalAssessment
              << setw(10) << universityExamMarks << endl;
-    }
-
-    string getSubjectCode() const {
-        return subjectCode;
-    }
-
-    int getRollNumber() const {
-        return rollNumber;
     }
 
     void edit() {
@@ -69,40 +55,44 @@ public:
 
 class MasterTable {
 private:
-    vector<StudentDetails*> records;
+    StudentDetails* records[50];  // Array of pointers to store up to 50 student records
+    int recordCount = 0;
 
 public:
     void buildMasterTable() {
         int n;
         cout << "Enter number of students: ";
         cin >> n;
+
         for (int i = 0; i < n; ++i) {
-            auto* student = new StudentDetails();
-            cout << "\nEnter details for student " << (i + 1) << ":" << endl;
-            student->input();
-            records.push_back(student);
+            records[recordCount] = new StudentDetails();
+            cout << "\nEnter details for student " << (recordCount + 1) << ":" << endl;
+            records[recordCount]->input();
+            recordCount++;
         }
     }
 
     void listTable() const {
-        if (records.empty()) {
+        if (recordCount == 0) {
             cout << "No records available." << endl;
             return;
         }
+
         cout << setw(15) << "Name" << setw(10) << "Roll No"
              << setw(15) << "Subject" << setw(15) << "Subject Code"
              << setw(10) << "IA Marks" << setw(10) << "UE Marks" << endl;
         cout << string(75, '-') << endl;
-        for (const auto* record : records) {
-            record->display();
+
+        for (int i = 0; i < recordCount; ++i) {
+            records[i]->display();
         }
     }
 
     void insertEntry() {
-        auto* student = new StudentDetails();
+        records[recordCount] = new StudentDetails();
         cout << "\nEnter details for new student:" << endl;
-        student->input();
-        records.push_back(student);
+        records[recordCount]->input();
+        recordCount++;
     }
 
     void deleteEntry() {
@@ -110,10 +100,13 @@ public:
         cout << "Enter Roll Number to delete: ";
         cin >> rollNumber;
 
-        for (auto it = records.begin(); it != records.end(); ++it) {
-            if ((*it)->getRollNumber() == rollNumber) {
-                delete *it;
-                records.erase(it);
+        for (int i = 0; i < recordCount; ++i) {
+            if (records[i]->rollNumber == rollNumber) {
+                delete records[i];  // Delete the student record
+                for (int j = i; j < recordCount - 1; ++j) {
+                    records[j] = records[j + 1];  // Shift remaining records
+                }
+                recordCount--;
                 cout << "Record deleted successfully!" << endl;
                 return;
             }
@@ -126,9 +119,9 @@ public:
         cout << "Enter Roll Number to edit: ";
         cin >> rollNumber;
 
-        for (auto* record : records) {
-            if (record->getRollNumber() == rollNumber) {
-                record->edit();
+        for (int i = 0; i < recordCount; ++i) {
+            if (records[i]->rollNumber == rollNumber) {
+                records[i]->edit();
                 cout << "Record updated successfully!" << endl;
                 return;
             }
@@ -141,14 +134,14 @@ public:
         cout << "Enter Roll Number to search: ";
         cin >> rollNumber;
 
-        for (const auto* record : records) {
-            if (record->getRollNumber() == rollNumber) {
+        for (int i = 0; i < recordCount; ++i) {
+            if (records[i]->rollNumber == rollNumber) {
                 cout << "\nRecord found:\n";
                 cout << setw(15) << "Name" << setw(10) << "Roll No"
                      << setw(15) << "Subject" << setw(15) << "Subject Code"
                      << setw(10) << "IA Marks" << setw(10) << "UE Marks" << endl;
                 cout << string(75, '-') << endl;
-                record->display();
+                records[i]->display();
                 return;
             }
         }
@@ -156,8 +149,8 @@ public:
     }
 
     ~MasterTable() {
-        for (auto* record : records) {
-            delete record;
+        for (int i = 0; i < recordCount; ++i) {
+            delete records[i];
         }
     }
 };
