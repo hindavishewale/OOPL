@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+class book
+{
+     public:
+    string title,author;
+    int price,stock;
+    void accept()
+    {
+        cout<<"enter title:";
+        cin>>title;
+        cout<<"enter author:";
+        cin>>author;
+        cout<<"enter price:";
+        cin>>price;
+        cout<<"enter stock:";
+        cin>>stock;
+    }
+    void search()
+    {
+      cout<<"searh";
+    }
+    void display()
+    {
+        cout<<title<<"\t"<<author<<"\t"<<price<<"\t"<<stock<<endl;
+    }
+};
+int main()
+{
+   book b[10];
+   int size,ch,choice,i,flag=0,copies,total_price;
+   string title_search,author_search;
+   cout<<"enter size";
+   cin>>size;
+   do{
+    cout<<"1.insert\t2.search\t3.display";
+    cin>>ch;
+    switch(ch)
+    {
+        case 1:
+              for(i=0;i<size;i++)
+              {
+                  b[i].accept();
+              }
+              break;
+        case 2:
+              cout<<"enter title and author to search:";
+              cin>>title_search>>author_search;
+              for(i=0;i<size;i++)
+              {
+                if(title_search==b[i].title&&author_search==b[i].author)
+                {
+                   flag=1;
+                   cout<<"book details are:"<<endl;
+                   cout<<"title:"<<b[i].title<<"\n"<<"author"<<b[i].author<<"\n"<<"price:"<<b[i].price<<"\n"<<"stock:"<<b[i].stock<<endl;
+                   cout<<"enter number of copies of book";
+                   cin>>copies;
+                   total_price=copies*b[i].price;
+                   b[i].stock=b[i].stock-copies;
+                   cout<<"your amoun:"<<total_price<<endl<<endl;
+                }
+              }
+              if(flag!=1)
+              {
+                  cout<<"book is not found!!!";
+              }
+              break;
+        case 3:
+            cout<<"title"<<"\t"<<"author"<<"\t"<<"price"<<"\t"<<"stock"<<endl;
+              for(i=0;i<size;i++)
+              {
+                  b[i].display();
+              }
+              break;
+    }
+    cout<<"1 to continue";
+    cin>>choice;
+       
+   }while(choice==1);
+    return 0;
+}
